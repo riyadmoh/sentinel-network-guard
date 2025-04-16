@@ -1,8 +1,14 @@
-
 import React, { useState } from 'react';
 import { CheckCircle, AlertTriangle, FileText, BarChart2, Database, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const OfflinePage = () => {
   const [selectedModel, setSelectedModel] = useState('cnn');
@@ -17,16 +23,13 @@ const OfflinePage = () => {
     detectedAnomalies: number;
   }>(null);
 
-  // Mock function to start processing
   const startProcessing = () => {
     setIsProcessing(true);
     setResults(null);
     
-    // Simulate processing delay
     setTimeout(() => {
       setIsProcessing(false);
       
-      // Generate mock results based on selected model and dataset
       setResults({
         accuracy: 0.93 + Math.random() * 0.05,
         precision: 0.89 + Math.random() * 0.08,
@@ -68,31 +71,24 @@ const OfflinePage = () => {
               <h2 className="text-xl font-medium text-white">Select Model</h2>
             </div>
             
-            <div className="space-y-3">
-              {models.map(model => (
-                <div 
-                  key={model.id}
-                  className={`flex items-center p-3 rounded border cursor-pointer transition-colors ${
-                    selectedModel === model.id 
-                      ? "bg-cyber-dark border-cyber-accent" 
-                      : "bg-cyber-dark/50 border-transparent hover:border-cyber-accent/30"
-                  }`}
-                  onClick={() => setSelectedModel(model.id)}
-                >
-                  <div className={`h-4 w-4 rounded-full mr-3 flex items-center justify-center ${
-                    selectedModel === model.id ? "bg-cyber-accent" : "bg-cyber-muted"
-                  }`}>
-                    {selectedModel === model.id && (
-                      <div className="h-2 w-2 rounded-full bg-cyber-dark"></div>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium">{model.name}</h3>
-                    <p className="text-cyber-text text-sm mt-1">{model.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Select
+              value={selectedModel}
+              onValueChange={setSelectedModel}
+            >
+              <SelectTrigger className="w-full bg-cyber-dark/50 border-cyber-accent/30">
+                <SelectValue placeholder="Select a model" />
+              </SelectTrigger>
+              <SelectContent className="bg-cyber-dark border-cyber-accent/30">
+                {models.map(model => (
+                  <SelectItem key={model.id} value={model.id}>
+                    <div>
+                      <div className="font-medium">{model.name}</div>
+                      <div className="text-sm text-cyber-text">{model.description}</div>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           {/* Dataset Selection */}
@@ -102,32 +98,28 @@ const OfflinePage = () => {
               <h2 className="text-xl font-medium text-white">Select Dataset</h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {datasets.map(dataset => (
-                <div 
-                  key={dataset.id}
-                  className={`flex items-start p-3 rounded border cursor-pointer transition-colors ${
-                    selectedDataset === dataset.id 
-                      ? "bg-cyber-dark border-cyber-accent" 
-                      : "bg-cyber-dark/50 border-transparent hover:border-cyber-accent/30"
-                  }`}
-                  onClick={() => setSelectedDataset(dataset.id)}
-                >
-                  <div className={`h-4 w-4 rounded-full mt-1 mr-3 flex-shrink-0 ${
-                    selectedDataset === dataset.id ? "bg-cyber-accent" : "bg-cyber-muted"
-                  }`}>
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium">{dataset.name}</h3>
-                    <p className="text-cyber-text text-xs mt-1">{dataset.description}</p>
-                    <div className="flex items-center mt-2 text-xs text-cyber-muted">
-                      <FileText size={12} className="mr-1" />
-                      {dataset.records} records
+            <Select
+              value={selectedDataset}
+              onValueChange={setSelectedDataset}
+            >
+              <SelectTrigger className="w-full bg-cyber-dark/50 border-cyber-accent/30">
+                <SelectValue placeholder="Select a dataset" />
+              </SelectTrigger>
+              <SelectContent className="bg-cyber-dark border-cyber-accent/30">
+                {datasets.map(dataset => (
+                  <SelectItem key={dataset.id} value={dataset.id}>
+                    <div>
+                      <div className="font-medium">{dataset.name}</div>
+                      <div className="text-sm text-cyber-text">{dataset.description}</div>
+                      <div className="flex items-center mt-1 text-xs text-cyber-muted">
+                        <FileText size={12} className="mr-1" />
+                        {dataset.records} records
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             
             <div className="mt-4 pt-4 border-t border-cyber-muted/20">
               <Button variant="outline" className="w-full">
