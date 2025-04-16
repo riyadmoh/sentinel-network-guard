@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Play, Pause, Download, RefreshCw, FilePcap } from 'lucide-react';
+import { Play, Pause, Download, RefreshCw, FileJson } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import StatusIndicator from '@/components/StatusIndicator';
@@ -129,7 +129,7 @@ const OnlinePage = () => {
             <h2 className="text-xl font-medium text-white mb-4">Conversion Settings</h2>
             
             <Alert className="bg-cyber-dark border-cyber-accent/30 mb-4">
-              <FilePcap className="h-4 w-4 text-cyber-accent" />
+              <FileJson className="h-4 w-4 text-cyber-accent" />
               <AlertTitle className="text-white">CICFlowMeter Integration</AlertTitle>
               <AlertDescription className="text-cyber-text">
                 Captured packets will be automatically processed using CICFlowMeter to generate flow-based features
